@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Details - BookGram</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #1E1E1E;
+            padding: 2rem 1rem;
+            color: white;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: #FFFFFF;
+            text-decoration: none;
+            padding: 10px 15px;
+            transition: 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #F39C12;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #f39c12;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* same as  main page */
+        .book-details-container {
+            margin-top: 100px;
+            padding: 2rem;
+        }
+
+        .book-card {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .book-cover {
+            width: 100%;
+            height: auto;
+            max-height: 600px;
+            height: 500px;
+            object-fit: contain;
+            background: #f5f5f5;
+            border-radius: 15px 15px 0 0;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid #eee;
+            margin: 0 auto;
+            display: block;
+            max-width: 400px;
+        }
+
+        .book-cover-container {
+            background: #ffffff;
+            text-align: center;
+            padding: 2rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .book-cover:hover {
+            transform: scale(1.02);
+            transition: transform 0.3s ease;
+        }
+
+        .book-info {
+            padding: 2rem;
+        }
+
+        .rating-stars {
+            color: #FFD700;
+            font-size: 1.4rem;
+        }
+
+       
+        .book-details-container {
+            margin-top: 100px;
+            padding: 2rem;
+            background-color: #f8f9fa;
+        }
+
+        .book-card {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .book-info {
+            padding: 2rem;
+            color: #333;
+        }
+
+        .book-info h1 {
+            color: #1E1E1E;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .book-info h2 {
+            color: #666;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .badge.bg-warning {
+            background-color: #F39C12 !important;
+            color: #1E1E1E !important;
+            font-weight: 500;
+        }
+
+        .rating-stars {
+            color: #FFD700;
+            font-size: 1.4rem;
+            margin-top: 0.5rem;
+        }
+
+        .lead {
+            color: #444 !important;    
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .list-unstyled li {
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+
+        .list-unstyled strong {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .read-now-btn {
+            background: #F39C12;
+            color: white !important;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+        }
+
+        .read-now-btn:hover {
+            background: #e67e22;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
+        }
+
+        .read-now-btn:active {
+            transform: translateY(0);
+        }
+
+       
+         footer {
+            background: #1a1a1a;
+            padding: 4rem 0 0;
+            position: relative;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-col h3 {
+            color: #f39c12;
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            text-transform: uppercase;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-col li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-col a {
+            color: #ddd;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-col a:hover {
+            color: #f39c12;
+            padding-left: 5px;
+        }
+
+        .newsletter-form {
+            margin-top: 1rem;
+        }
+
+        .newsletter-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background: #2a2a2a;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-btn {
+            background: #f39c12;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            
+        }
+
+        .newsletter-btn:hover {
+            background: #e67e22;
+        }
+
+        .social-icons {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icons a {
+            width: 40px;
+            height: 40px;
+            background: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: white;
+            background: #f39c12;
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            background: #000;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 4rem;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+
+       
+        .footer-col p,
+        .footer-col li,
+        .contact-info p {
+            color: #ccc !important;
+        }
+
+        .newsletter-input {
+            color: #fff !important;
+           
+        }
+
+        .copyright {
+            color: #aaa !important;
+        }
+
+        .copyright a {
+            color: #aaa !important;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .book-cover {
+                height: 400px;
+               
+            }
+
+            .book-info h1 {
+                font-size: 2rem;
+            }
+
+            .book-info h2 {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background: #333;
+                padding: 1rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- Reuse your existing navbar -->
+    <nav class="navbar">
+        <div class="logo">BookGram</div>
+        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="collection.html">Collection</a></li>
+            <li><a href="#trending">Trending</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+
+    <div class="book-details-container">
+
+        <div class="book-card">
+            <div class="book-cover-container">
+
+                <img src="img/product-item2.jpg" class="book-cover" alt="Book Cover">
+                <div class="book-info">
+                    <h1>The Great Gatsby</h1>
+                    <h2 class="text-muted">F. Scott Fitzgerald</h2>
+
+                    <!-- <div class="mt-4">
+                        <a href="#" class="read-now-btn">
+                            <i class="fas fa-book-open me-2"></i>Read Now
+                        </a>
+                    </div> -->
+                    <a href="pdfs/The Master Key System, Charles F. Haanel.pdf" class="read-now-btn" target="_blank">
+                        <i class="fas fa-book-open me-2"></i>Read Now
+                    </a>
+
+                    <div class="my-3">
+                        <span class="badge bg-warning">Fiction</span>
+                        <div class="rating-stars mt-2">
+                            ★★★★☆
+                        </div>
+                    </div>
+
+
+
+                    <p class="lead">
+                        The Great Gatsby is a 1925 novel depicting the Jazz Age through
+                        the story of mysterious millionaire Jay Gatsby and his obsession
+                        with former lover Daisy Buchanan.
+                    </p>
+
+                    <!-- Additional Details -->
+                    <div class="mt-4">
+                        <h4>Details</h4>
+                        <ul class="list-unstyled">
+                            <li><strong>Published:</strong> 1925</li>
+                            <li><strong>Pages:</strong> 218</li>
+                            <li><strong>Language:</strong> English</li>
+                        </ul>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <h3>About BookGram</h3>
+                <p>Connecting readers worldwide through shared literary experiences. Discover, share, and discuss your
+                    favorite books with our global community.</p>
+            </div>
+
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">New Arrivals</a></li>
+                    <li><a href="#">Best Sellers</a></li>
+                    <li><a href="#">Author Spotlights</a></li>
+                    <li><a href="#">Reading Lists</a></li>
+                    <li><a href="#">Community Guidelines</a></li>
+                </ul>
+            </div>
+
+            <!-- <div class="footer-col">
+                <h3>Newsletter</h3>
+                <p>Subscribe to get updates about new releases and special offers.</p>
+                <form class="newsletter-form">
+                    <input type="email" class="newsletter-input" placeholder="Enter your email">
+                    <button type="submit" class="newsletter-btn">Subscribe</button>
+                </form>
+            </div> -->
+
+            <div class="footer-col">
+                <h3>Connect With Us</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-goodreads"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+                <div class="contact-info" style="margin-top: 2rem;">
+                    <div class="social-icons">
+                       <a href="#"> <i class="fa fa-envelope"></i></a>
+                        <p>info@bookgram.com</p>
+                    </div>
+                    <div class="social-icons">
+                        <a href=""> <i class="fa fa-phone" ></i></a>
+                        <p>+1 (555) 123-4567</p>
+                    </div>   
+                </div>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <p>&copy; 2025 BookGram. All rights reserved. | <a href="#" style="color: #888;">Privacy Policy</a> | <a
+                    href="#" style="color: #888;">Terms of Service</a></p>
+            <p style="margin-top: 0.5rem;"> 1,234,567 Books Shared and Counting!</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+
+        function toggleMenu() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        }
+    </script>
+
+
+</body>
+
+</html>

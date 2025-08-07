@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookGram</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+
+
+        .hero-section {
+            margin-top: 100px;
+            background-color: beige;
+            min-height: 90vh;
+
+
+        }
+
+        .hero-section h1 {
+            font-weight: bold;
+            font-size: 2.5rem;
+        }
+
+        .hero-section p {
+            color: #666;
+            font-size: 1.0rem;
+        }
+
+        .btn-success {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 20px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 4rem 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #1E1E1E;
+            padding: 2rem 1rem;
+            color: white;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: #FFFFFF;
+            text-decoration: none;
+            padding: 10px 15px;
+            transition: 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #F39C12;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #f39c12;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .genre-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .books-section {
+            padding: 100px 2rem 2rem;
+            text-align: center;
+        }
+
+        .swiper {
+            width: 100%;
+            padding: 2rem 0;
+        }
+
+        .card {
+            background-color: #2C2C2C;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: 0.3s;
+        }
+
+        .book-card {
+            text-decoration: none;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            margin: 1rem;
+            max-width: 300px;
+            transition: transform 0.3s;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            border: 1px solid #F39C12;
+        }
+
+        .book-card img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            color: #FFFFFF;
+        }
+
+        .card p {
+            color: #B0B0B0;
+        }
+
+        /* Add these styles to fix text formatting */
+        .book-card h3,
+        .book-card p,
+        .book-card small {
+            text-decoration: none !important;
+            color: inherit !important;
+        }
+
+        .book-card-link {
+            text-decoration: none !important;
+        }
+
+        .book-card h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.4rem;
+            color: #2c3e50 !important;
+            font-weight: 600
+        }
+
+        .book-card p {
+            margin-bottom: 0.3rem;
+            font-size: 1rem;
+            color: #666 !important;
+        }
+
+        .book-card small {
+            display: block;
+            font-size: 0.95rem;
+            color: #f39c12 !important;
+            font-weight: 500;
+        }
+
+        /* Search Bar */
+        .search-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+
+        /* Footer  */
+        footer {
+            background: #1a1a1a;
+            padding: 4rem 0 0;
+            position: relative;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-col h3 {
+            color: #f39c12;
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            text-transform: uppercase;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-col li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-col a {
+            color: #ddd;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-col a:hover {
+            color: #f39c12;
+            padding-left: 5px;
+        }
+
+        .newsletter-form {
+            margin-top: 1rem;
+        }
+
+        .newsletter-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background: #2a2a2a;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-btn {
+            background: #f39c12;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .newsletter-btn:hover {
+            background: #e67e22;
+        }
+
+        .social-icons {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icons a {
+            width: 40px;
+            height: 40px;
+            background: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: white;
+            background: #f39c12;
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            background: #000;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 4rem;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+       
+        .footer-col p,
+        .footer-col li,
+        .contact-info p {
+            color: #ccc !important;
+        }
+
+        .newsletter-input {
+            color: #fff !important;
+          
+        }
+
+        .copyright {
+            color: #aaa !important;
+        }
+
+        .copyright a {
+            color: #aaa !important;
+            text-decoration: underline;
+        }
+
+
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: #f39c12 !important;
+        }
+
+        .swiper-pagination-bullet-active {
+            background: #f39c12 !important;
+        }
+
+        .testimonial-section {
+            padding: 4rem 0;
+        }
+
+        .testimonial-card {
+            transition: transform 0.3s ease;
+            height: 100%;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .testimonial-card img {
+            border: 2px solid #f39c12;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background: #333;
+                padding: 1rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .book-card img {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">BookGram</div>
+        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="collection.html">Collection</a></li>
+            <li><a href="#trending">Trending</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero-section d-flex align-items-center">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1>Welcome to BookGram</h1>
+                    <h2>For All Your Reading Needs</h2>
+                    <p>Connecting readers worldwide through shared literary experiences. Discover, share, and discuss your
+                        favorite books with our global community.</p>
+                    <a href="#" class="btn btn-success">Read More</a>
+                </div>
+                <div class="col-md-6">
+                    <img src="img/hero.png" alt="Books Illustration" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Our collection -->
+    <!-- In the Collection Section -->
+    <section class="books-section" id="collection">
+        <h2 class="genre-title">Popular</h2>
+        <div class="swiper collectionSwiper">
+            <div class="swiper-wrapper">
+                <!-- Book Card 1 -->
+                <div class="swiper-slide">
+                    <a href="book-details.html" class="book-card-link">
+                        <div class="book-card">
+                            <img src="img/product-item2.jpg" alt="The Great Gatsby">
+                            <h3>The Great Travel</h3>
+                            <p>Sanetel Howdy</p>
+                            <p><small>Mystery</small></p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Book Card 2 -->
+                <div class="swiper-slide">
+                    <a href="book-details.html" class="book-card-link">
+                        <div class="book-card">
+                            <img src="img/product-item3.jpg" alt="To Kill a Mockingbird">
+                            <h3>Birds Gonna Be Happy</h3>
+                            <p>Tambur Hood</p>
+                            <p><small>Classic</small></p>
+                        </div>
+                    </a>
+                </div>
+
+                <!---- Book Card 3 -->
+                <div class="swiper-slide">
+                    <a href="book-details.html" class="book-card-link">
+                        <div class="book-card">
+                            <img src="img/product-item4.jpg" alt="1984">
+                            <h3>Life of Seacrits</h3>
+                            <p>Galista Marie</p>
+                            <p><small>Wild Life</small></p>
+                        </div>
+                    </a>
+                </div>
+                <!---- Book Card 4 -->
+
+                <div class="swiper-slide">
+                    <a href="book-details.html" class="book-card-link">
+                        <div class="book-card">
+                            <img src="img/product-item5.jpg" alt="1984">
+                            <h3>Life Of The Wild</h3>
+                            <p>Sanetel Howdy</p>
+                            <p><small>Wild Life</small></p>
+                        </div>
+                    </a>
+                </div>
+
+                <!---- Book Card 5-->
+
+                <div class="swiper-slide">
+                    <a href="book-details.html" class="book-card-link">
+                        <div class="book-card">
+                            <img src="img/product-item6.jpg" alt="1984">
+                            <h3>Life of Seacrits</h3>
+                            <p>Galista Marie</p>
+                            <p><small>Wild Life</small></p>
+                        </div>
+                    </a>
+                </div>
+
+                <!---- Book Card 6 -->
+
+                <div class="swiper-slide">
+                    <a href="book-details.html" class="book-card-link">
+                        <div class="book-card">
+                            <img src="img/product-item7.jpg" alt="1984">
+                            <h3>Tips Of Simple Life</h3>
+                            <p>George Orwell</p>
+                            <p><small>Dystopian</small></p>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </section>
+
+    <!--  Trending Section -->
+    <section class="books-section" id="trending">
+        <h2 class="genre-title">Trending Now</h2>
+        <div class="swiper trendingSwiper">
+            <div class="swiper-wrapper">
+                <!-- Trending Card 1 -->
+                <div class="swiper-slide">
+                    <a href="book-details2.html" class="book-card-link">
+                        <div class="book-card">
+                            <img src="img/book-1.png" alt="Pride and Prejudice">
+                            <h3>Black Night</h3>
+                            <p>Jane Austen</p>
+                            <p><small>Horror</small></p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Trending Card 2 -->
+                <div class="swiper-slide">
+                    <a href="book-details.html" class="book-card-link">
+                        <div class="book-card">
+                            <img src="img/book-2.png" alt="The Hobbit">
+                            <h3>About The First Night</h3>
+                            <p>J.R.R. Tolkien</p>
+                            <p><small>Horro</small></p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Trending Card 3 -->
+                <div class="swiper-slide">
+                    <a href="book-details.html" class="book-card-link">
+                        <div class="book-card">
+                            <img src="img/book-3.png" alt="The Hobbit">
+                            <h3>Open the sky </h3>
+                            <p> Tolkien</p>
+                            <p><small>Sci-Fi</small></p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Trending Card 4 -->
+
+                <div class="swiper-slide">
+                    <a href="book-details.html" class="book-card-link">
+                        <div class="book-card">
+                            <img src="img/book-4.png" alt="The Hobbit">
+                            <h3>book</h3>
+                            <p>Edvin</p>
+                            <p><small>Fantasy</small></p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Trending Card 5 -->
+
+                <div class="swiper-slide">
+                    <a href="book-details.html" class="book-card-link">
+                        <div class="book-card">
+                            <img src="img/book-5.png" alt="The Hobbit">
+                            <h3>The Hobbit</h3>
+                            <p>J.R.R. Tolkien</p>
+                            <p><small>Fantasy</small></p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Trending Card 5 -->
+
+                <div class="swiper-slide">
+                    <a href="book-details.html" class="book-card-link">
+                        <div class="book-card">
+                            <img src="img/book-6.png" alt="The Hobbit">
+                            <h3>The Big Book of Science</h3>
+                            <p>Jane austen</p>
+                            <p><small>Education</small></p>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </section>
+
+    <!-- Testimoial-->
+    <section class="testimonial-section py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5 genre-title">What Our Readers Say</h2>
+
+            <div class="row g-4">
+                <!-- Testimonial 1 -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="testimonial-card p-4 rounded shadow-sm bg-white">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="img/pic-1.png" class="rounded-circle me-3" alt="Rahul Parikh"
+                                style="width: 60px; height: 60px; object-fit: cover;">
+                            <div>
+                                <h5 class="mb-0">Rahul Parikh</h5>
+                                <p class="text-muted mb-0">Avid Reader</p>
+                            </div>
+                        </div>
+                        <p class="text-muted">
+                            "BookGram has completely transformed my reading experience. The community recommendations
+                            are spot-on and I've discovered so many new favorites!"
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="testimonial-card p-4 rounded shadow-sm bg-white">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="img/pic-2.png" class="rounded-circle me-3" alt="Nila Shah"
+                                style="width: 60px; height: 60px; object-fit: cover;">
+                            <div>
+                                <h5 class="mb-0">Nila Shah</h5>
+                                <p class="text-muted mb-0">Book Blogger</p>
+                            </div>
+                        </div>
+                        <p class="text-muted">
+                            "The best platform for book lovers! The collection updates keep me coming back,
+                            and the discussion features are fantastic."
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="testimonial-card p-4 rounded shadow-sm bg-white">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="img/pic-3.png" class="rounded-circle me-3" alt="Abhisekh Bhatt"
+                                style="width: 60px; height: 60px; object-fit: cover;">
+                            <div>
+                                <h5 class="mb-0">Abhisekh Bhatt</h5>
+                                <p class="text-muted mb-0">Library Member</p>
+                            </div>
+                        </div>
+                        <p class="text-muted">
+                            "I love how easy it is to find recommendations and connect with other readers.
+                            BookGram has reignited my passion for reading!"
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- footer -->
+    <footer>
+        <div class="footer-content" id="contact">
+            <div class="footer-col">
+                <h3>About BookGram</h3>
+                <p>Connecting readers worldwide through shared literary experiences. Discover, share, and discuss your
+                    favorite books with our global community.</p>
+            </div>
+
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">New Arrivals</a></li>
+                    <li><a href="#">Best Sellers</a></li>
+                    <li><a href="#">Author Spotlights</a></li>
+                    <li><a href="#">Reading Lists</a></li>
+                    <li><a href="#">Community Guidelines</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>Connect With Us</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-goodreads"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+                <div class="contact-info" style="margin-top: 2rem;">
+                    <div class="social-icons">
+                       <a href="#"> <i class="fa fa-envelope"></i></a>
+                        <p>info@bookgram.com</p>
+                    </div>
+                    <div class="social-icons">
+                        <a href=""> <i class="fa fa-phone" ></i></a>
+                        <p>+1 (555) 123-4567</p>
+                    </div>   
+                </div>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <p>&copy; 2025 BookGram. All rights reserved. | <a href="#" style="color: #888;">Privacy Policy</a> | <a
+                    href="#" style="color: #888;">Terms of Service</a></p>
+            <p style="margin-top: 0.5rem;"> 1,234,567 Books Shared and Counting!</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+
+        const swiperConfig = {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            loop: true,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 2,
+                },
+                1024: {
+                    slidesPerView: 3,
+                }
+            }
+        };
+        const collectionSwiper = new Swiper(".collectionSwiper", swiperConfig);
+        const trendingSwiper = new Swiper(".trendingSwiper", swiperConfig);
+    
+        function toggleMenu() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        }
+    </script>
+</body>
+
+</html>

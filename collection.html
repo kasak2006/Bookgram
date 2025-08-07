@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookGenres | Digital Library</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #1E1E1E;
+            padding: 2rem 1rem;
+            color: white;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: #FFFFFF;
+            text-decoration: none;
+            padding: 10px 15px;
+            transition: 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #F39C12;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #f39c12;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            margin-top: 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .genre-section {
+            margin-bottom: 3rem;
+        }
+
+        .genre-section:first-child {
+            margin-top: 100px;
+            /* Additional spacing for first section */
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin-top: 70px;
+                
+            }
+
+            .genre-section:first-child {
+                margin-top: 20px;
+            }
+        }
+
+        .genre-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .genre-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+
+        .books-container {
+            position: relative;
+            overflow: hidden;
+
+        }
+
+        .books-scroll {
+            display: grid;
+            grid-auto-flow: column;
+            gap: 1.5rem;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding-bottom: 1rem;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .books-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 12px;
+            padding: 0.8rem;
+            width: 200px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .book-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+
+        .book-author {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        .nav-button {
+            position: absolute;
+            top: 40%;
+            transform: translateY(-50%);
+            background: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .nav-button.prev {
+            left: -1px;
+        }
+
+        .nav-button.next {
+            right: -1px;
+        }
+
+        .books-container:hover .nav-button {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .book-card {
+                width: 160px;
+            }
+
+            .book-cover {
+                height: 200px;
+            }
+
+            .book-title {
+                font-size: 1rem;
+            }
+
+            .book-author {
+                font-size: 0.8rem;
+            }
+
+            .nav-button {
+                display: none;
+            }
+
+            .genre-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background: #333;
+                padding: 1rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+        /* footer */
+        footer {
+            background: #1a1a1a;
+            padding: 4rem 0 0;
+            position: relative;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-col h3 {
+            color: #f39c12;
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            text-transform: uppercase;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-col li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-col a {
+            color: #ddd;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-col a:hover {
+            color: #f39c12;
+            padding-left: 5px;
+        }
+
+    
+        .social-icons {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icons a {
+            width: 40px;
+            height: 40px;
+            background: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: white;
+            background: #f39c12;
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            background: #000;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 4rem;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+
+        /* Footer text adjustments */
+        .footer-col p,
+        .footer-col li,
+        .contact-info p {
+            color: #ccc !important;
+        }
+
+        .newsletter-input {
+            color: #fff !important;
+            /* White text for dark input */
+        }
+
+        .copyright {
+            color: #aaa !important;
+        }
+
+        .copyright a {
+            color: #aaa !important;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">BookGram</div>
+        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="collection.html">Collection</a></li>
+            <li><a href="#trending">Trending</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- Fiction Section -->
+        <section class="genre-section">
+            <div class="genre-header">
+                <h2 class="genre-title">Fiction</h2>
+
+            </div>
+            <div class="books-container">
+              
+                <div class="books-scroll">
+                  
+                    <a href="book-details2.html" class="book-card">
+                        <img src="img/book-1.png" alt="Book Cover" class="book-cover">
+                        <h3 class="book-title">Black Night</h3>
+                        <p class="book-author">Jane Austen</p>
+                    </a>
+                    <a href="book-detail.html" class="book-card">
+                        <img src="img/book-2.png" alt="Book Cover" class="book-cover">
+                        <h3 class="book-title">About The First Night</h3>
+                        <p class="book-author">J.R.R. Tolkien</p>
+                    </a>
+                    <a href="book-detail.html" class="book-card">
+                        <img src="img/book-3.png" alt="Book Cover" class="book-cover">
+                        <h3 class="book-title">Open the sky</h3>
+                        <p class="book-author">Tolkien</p>
+                    </a>
+                    <a href="book-detail.html" class="book-card">
+                        <img src="img/book-4.png" alt="Book Cover" class="book-cover">
+                        <h3 class="book-title">book</h3>
+                        <p class="book-author">Edvin</p>
+                    </a>
+                    <a href="book-detail.html" class="book-card">
+                        <img src="img/book-5.png" alt="Book Cover" class="book-cover">
+                        <h3 class="book-title">The Big Book of Science</h3>
+                        <p class="book-author">Jane austen</p>
+                    </a>
+                   
+                </div>
+              
+            </div>
+        </section>
+
+        <!-- Thriller Section -->
+        <section class="genre-section">
+            <div class="genre-header">
+                <h2 class="genre-title">Thriller</h2>
+
+            </div>
+            <div class="books-container">
+               
+                <div class="books-scroll">
+                    <a href="book-details.html" class="book-card">
+                        <img src="img/book-6.png" alt="Book Cover" class="book-cover">
+                        <h3 class="book-title">By The Air</h3>
+                        <p class="book-author">Jane austen</p>
+                    </a>
+                    <a href="book-details.html" class="book-card">
+                        <img src="img/book-7.png" alt="Book Cover" class="book-cover">
+                        <h3 class="book-title">Murdering Last Year</h3>
+                        <p class="book-author">Smith Jane</p>
+                        
+                    </a>
+                    <a href="book-details.html" class="book-card">
+                        <img src="img/book-8.png" alt="Book Cover" class="book-cover">
+                        <h3 class="book-title">The Hobbit</h3>
+                        <p class="book-author">Naomi Gilbert</p>
+                    </a>
+                    <a href="book-details.html" class="book-card">
+                        <img src="img/book-9.png" alt="Book Cover" class="book-cover">
+                        <h3 class="book-title">Self Help</h3>
+                        <p class="book-author">Rachel Chen</p>
+                    </a>
+                    <a href="book-details.html" class="book-card">
+                        <img src="img/book-10.png" alt="Book Cover" class="book-cover">
+                        <h3 class="book-title">Welocme To Space</h3>
+                        <p class="book-author">Albert Zen</p>
+                    </a>
+
+                </div>
+              
+            </div>
+
+        </section>
+
+        <section class="genre-section">
+            <div class="genre-header">
+                <h2 class="genre-title">Mystery</h2>
+
+            </div>
+            <div class="books-container">
+                
+                <div class="books-scroll">
+                    <a href="book-details.html" class="book-card">
+                        <img src="img/book-11.png" alt="Book Cover" class="book-cover">
+                        <h3 class="book-title">Monsoon</h3>
+                        <p class="book-author">Jane Smith</p>
+                    </a>
+                    <a href="book-details.html" class="book-card">
+                        <img src="img/book-12.png" alt="Book Cover" class="book-cover">
+                        <h3 class="book-title">Eveything You Never</h3>
+                        <p class="book-author">Jane Smith</p>
+                    </a>
+                    <a href="book-details.html" class="book-card">
+                        <img src="img/book-13.png" alt="Book Cover" class="book-cover">
+                        <h3 class="book-title">Graphical Design School</h3>
+                        <p class="book-author">Jane Smith</p>
+                    </a>
+                    <a href="book-details.html" class="book-card">
+                        <img src="img/book-14.png" alt="Book Cover" class="book-cover">
+                        <h3 class="book-title">Food Poison</h3>
+                        <p class="book-author">Jane Smith</p>
+                    </a>
+                    <a href="book-details.html" class="book-card">
+                        <img src="img/book-15.png" alt="Book Cover" class="book-cover">
+                        <h3 class="book-title">Design</h3>
+                        <p class="book-author">Jane Smith</p>
+                    </a>
+
+                </div>
+              
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer-content" id="contact">
+            <div class="footer-col">
+                <h3>About BookGram</h3>
+                <p>Connecting readers worldwide through shared literary experiences. Discover, share, and discuss your
+                    favorite books with our global community.</p>
+            </div>
+
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">New Arrivals</a></li>
+                    <li><a href="#">Best Sellers</a></li>
+                    <li><a href="#">Author Spotlights</a></li>
+                    <li><a href="#">Reading Lists</a></li>
+                    <li><a href="#">Community Guidelines</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>Connect With Us</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-goodreads"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+                <div class="contact-info" style="margin-top: 2rem;">
+                    <div class="social-icons">
+                       <a href="#"> <i class="fa fa-envelope"></i></a>
+                        <p>info@bookgram.com</p>
+                    </div>
+                    <div class="social-icons">
+                        <a href=""> <i class="fa fa-phone" ></i></a>
+                        <p>+1 (555) 123-4567</p>
+                    </div>   
+                </div>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <p>&copy; 2024 BookGram. All rights reserved. | <a href="#" style="color: #888;">Privacy Policy</a> | <a
+                    href="#" style="color: #888;">Terms of Service</a></p>
+            <p style="margin-top: 0.5rem;"> 1,234,567 Books Shared and Counting!</p>
+        </div>
+    </footer>
+
+    <script>
+        // horizontel scroll 
+        document.querySelectorAll('.books-container').forEach(container => {
+            const scroll = container.querySelector('.books-scroll');
+                 });
+
+    </script>
+</body>
+
+</html>
